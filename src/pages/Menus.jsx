@@ -14,27 +14,13 @@ const Menus = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [activeCategory, setActiveCategory] = useState("");
   const [displayItems, setDisplayItems] = useState([]);
-  // const searchedProduct = products;
-
-  // const productPerPage = 4;
-  // const visitedPage = pageNumber * productPerPage;
-  // const displayPage = searchedProduct.slice(
-  //   visitedPage,
-  //   visitedPage + productPerPage
-  // );
-
-  // const pageCount = Math.ceil(searchedProduct.length / productPerPage);
-
-  // const changePage = ({ selected }) => {
-  //   setPageNumber(selected);
-  // };
 
   React.useEffect(() => {
     categoryListApi()
       .then((res) => {
         console.log(res, res.data);
         setCategoryList(res.data);
-        setActiveCategory(res.data[0].id);
+        setActiveCategory(res.data[0]);
       })
       .catch((err) => {
         alert('request error.');
@@ -43,7 +29,7 @@ const Menus = () => {
   }, []);
 
   React.useEffect(() => {
-    dishListApi({ categoryId: activeCategory, status: 1 })
+    dishListApi({ categoryId: activeCategory.id, status: 1 })
       .then((res) => {
         console.log(res, res.data);
         setDisplayItems(res.data);
@@ -56,25 +42,25 @@ const Menus = () => {
 
   return (
     <Helmet title="Menu">
-      <Nav pills className="justify-content-between">
-        {categoryList.map((cat) =>
-        (<NavItem key={cat.id}>
-          <NavLink className="custom-link" href="#" active={cat.id === activeCategory}
-            onClick={(event) => {
-              event.preventDefault();
-              setActiveCategory(cat.id);
-            }}>
-            {cat.name}
-          </NavLink>
-        </NavItem>))
-        }
-      </Nav>
       <Container>
-        <Row className="justify-content-between">
-
-          {/* {categoryList.map((cat) => (<div key={cat.id}>{cat.name}</div>))} */}
-        </Row>
+        <Nav pills className="justify-content-between" style={{ marginTop: "1rem" }}>
+          {categoryList.map((cat) =>
+          (<NavItem key={cat.id}>
+            <NavLink className="custom-link" href="#" active={cat.id === activeCategory.id}
+              onClick={(event) => {
+                event.preventDefault();
+                setActiveCategory(cat);
+              }}>
+              {cat.name}
+            </NavLink>
+          </NavItem>))
+          }
+        </Nav>
         <Row>
+          <h1 className="mt-3">Our {activeCategory.name} Selections</h1>
+        </Row>
+        <Row style={{ minHeight: "60vh" }}>
+
           {displayItems.map((item) => (
             <Col
               lg="3"

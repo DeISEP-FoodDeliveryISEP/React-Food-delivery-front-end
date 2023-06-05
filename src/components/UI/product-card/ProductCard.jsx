@@ -30,7 +30,7 @@ const ProductCard = (props) => {
   return (
     <div className="product__item d-flex flex-column justify-content-between">
       <div className="product__content">
-        <img className="product__img w-50" src={formatImageLink(image)} onError={({ currentTarget }) => { currentTarget.src = defaultItemImage }} alt="food" />
+        <img className="product__img img-fluid" src={formatImageLink(image)} onError={({ currentTarget }) => { currentTarget.src = defaultItemImage }} alt="food" />
         <h5>
           <Link to={`/pizzas/${id}`}>{name}</Link>
         </h5>
