@@ -7,7 +7,7 @@ import ProductCard from "../components/UI/product-card/ProductCard";
 import Helmet from "../components/Helmet/Helmet";
 import "../styles/pagination.css";
 
-import { categoryListApi, dishListApi } from "../api/main";
+import { categoryListApi, dishListApi, setmealListApi } from "../api/main";
 
 const Menus = () => {
   // const [pageNumber, setPageNumber] = useState(0);
@@ -29,15 +29,30 @@ const Menus = () => {
   }, []);
 
   React.useEffect(() => {
-    dishListApi({ categoryId: activeCategory.id, status: 1 })
-      .then((res) => {
-        console.log(res, res.data);
-        setDisplayItems(res.data);
-      })
-      .catch((err) => {
-        alert('request error.');
-        console.error(err);
-      })
+    const catType = activeCategory?.type === 2 ? 2 : 1;
+    if (catType === 1) {
+      dishListApi({ categoryId: activeCategory.id, status: 1 })
+        .then((res) => {
+          console.log(res, res.data);
+          setDisplayItems(res.data);
+        })
+        .catch((err) => {
+          alert('request error.');
+          console.error(err);
+        })
+    }
+    else {
+      setmealListApi({ categoryId: activeCategory.id, status: 1 })
+        .then((res) => {
+          console.log(res, res.data);
+          setDisplayItems(res.data);
+        })
+        .catch((err) => {
+          alert('request error.');
+          console.error(err);
+        })
+    }
+
   }, [activeCategory]);
 
   return (
