@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col } from "reactstrap";
 import { cartActions } from "../store/shopping-cart/cartSlice";
 import { Link } from "react-router-dom";
+import { formatImageLink, formatPrice } from "../common/utils";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -35,8 +36,8 @@ const Cart = () => {
 
               <div className="mt-4">
                 <h6>
-                  Subtotal: $
-                  <span className="cart__subtotal">{totalAmount}</span>
+                  Subtotal:
+                  <span className="cart__subtotal">{formatPrice(totalAmount)}</span>
                 </h6>
                 <p>Taxes and shipping will calculate at checkout</p>
                 <div className="cart__page-btn">
@@ -66,10 +67,10 @@ const Tr = (props) => {
   return (
     <tr>
       <td className="text-center cart__img-box">
-        <img src={image} alt="" />
+        <img src={formatImageLink(image)} alt="" />
       </td>
       <td className="text-center">{name}</td>
-      <td className="text-center">${price}</td>
+      <td className="text-center">{formatPrice(price)}</td>
       <td className="text-center">{quantity}px</td>
       <td className="text-center cart__item-del">
         <i className="ri-delete-bin-line" onClick={deleteItem}></i>
