@@ -42,3 +42,9 @@ h2 {
 section {
   padding: 60px 0px;
 }
+
+:root {
+  --theme-red: #df2020;
+  --theme-dark-red: #971515;
+  --theme-font-black: #212245;
+}

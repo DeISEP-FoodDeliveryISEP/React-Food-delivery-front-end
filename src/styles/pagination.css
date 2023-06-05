@@ -25,3 +25,16 @@
 .paginationBttns a:hover {
   background: #df2020;
 }
+
+.nav-link.custom-link {
+  color: var(--theme-font-black);
+  /* background-color: #df2020; */
+}
+
+.nav-link.custom-link:hover {
+  color: var(--theme-dark-red);
+}
+
+a.nav-link.custom-link.active {
+  background-color: var(--theme-red);
+}
