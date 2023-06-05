@@ -6,11 +6,14 @@ import "../../../styles/product-card.css";
 
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/shopping-cart/cartSlice";
+import { formatImageLink } from "../../../common/utils";
 
 import { Link } from "react-router-dom";
 
+import defaultItemImage from "../../../assets/images/defaultItemImage.png";
+
 const ProductCard = (props) => {
-  const { id, name, image, price, extraIngredients } = props.item;
+  const { id, name, image, price } = props.item;
   const dispatch = useDispatch();
 
   const addToCart = () => {
@@ -19,8 +22,7 @@ const ProductCard = (props) => {
         id,
         name,
         image,
-        price,
-        extraIngredients
+        price
       })
     );
   };
@@ -28,7 +30,7 @@ const ProductCard = (props) => {
   return (
     <div className="product__item d-flex flex-column justify-content-between">
       <div className="product__content">
-        <img className="product__img w-50" src={image} alt="food" />
+        <img className="product__img w-50" src={formatImageLink(image)} onError={({ currentTarget }) => { currentTarget.src = defaultItemImage }} alt="food" />
         <h5>
           <Link to={`/pizzas/${id}`}>{name}</Link>
         </h5>

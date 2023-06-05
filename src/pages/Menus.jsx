@@ -10,7 +10,7 @@ import "../styles/pagination.css";
 import { categoryListApi, dishListApi } from "../api/main";
 
 const Menus = () => {
-  const [pageNumber, setPageNumber] = useState(0);
+  // const [pageNumber, setPageNumber] = useState(0);
   const [categoryList, setCategoryList] = useState([]);
   const [activeCategory, setActiveCategory] = useState("");
   const [displayItems, setDisplayItems] = useState([]);

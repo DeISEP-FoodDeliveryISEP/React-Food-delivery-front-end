@@ -7,9 +7,14 @@ import "../../../styles/cart-item.css";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/shopping-cart/cartSlice";
 
+import defaultItemImage from "../../../assets/images/defaultItemImage.png";
+import {
+  formatImageLink, formatPrice
+} from "../../../common/utils";
 const CartItem = ({ item, onClose }) => {
-  const { id, title, price, image01, quantity, extraIngredients } = item;
-  let navigate = useNavigate(); 
+  console.log('cart:', item);
+  const { id, name, price, image, quantity, extraIngredients } = item;
+  let navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -17,10 +22,9 @@ const CartItem = ({ item, onClose }) => {
     dispatch(
       cartActions.addItem({
         id,
-        title,
+        name,
         price,
-        image01,
-        extraIngredients
+        image,
       })
     );
     event.stopPropagation();
@@ -36,35 +40,36 @@ const CartItem = ({ item, onClose }) => {
     event.stopPropagation();
   };
 
-  const handlePizzaSelection = () =>  {
+  const handlePizzaSelection = () => {
     navigate(`/pizzas/${id}`);
-    onClose(); 
+    onClose();
   }
 
   return (
     <ListGroupItem className="border-0 cart__item" onClick={handlePizzaSelection}>
       <div className="cart__item-info d-flex gap-4">
-        <img src={image01} alt="product-img" />
+        <img src={formatImageLink(image)} onError={({ currentTarget }) => { currentTarget.src = defaultItemImage }} alt="food" />
+
 
         <div className="cart__product-info w-100 d-flex align-items-center gap-4 justify-content-between">
           <div>
-            <h6 className="cart__product-title">{title}</h6>
+            <h6 className="cart__product-title">{name}</h6>
             <p className=" d-flex align-items-center gap-5 cart__product-price">
-              {quantity}x <span>${price}</span>
+              {quantity}x <span>{formatPrice(price)}</span>
             </p>
             <div className="d-flex flex-column">
-            {
-              extraIngredients !== undefined && (
-                Array.from(extraIngredients).map(value => {
-                  return(
-                    <span key={value} className="m-0">
-                      {value}
-                    </span>
-                  )
-                })
+              {
+                extraIngredients !== undefined && (
+                  Array.from(extraIngredients).map(value => {
+                    return (
+                      <span key={value} className="m-0">
+                        {value}
+                      </span>
+                    )
+                  })
                 )
               }
-              </div>
+            </div>
             <div className=" d-flex align-items-center justify-content-between increase__decrease-btn">
               <span className="increase__btn" onClick={event => incrementItem(event)}>
                 <i className="ri-add-line"></i>
