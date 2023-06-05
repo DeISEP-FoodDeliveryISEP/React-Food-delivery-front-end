@@ -8,7 +8,7 @@ import Helmet from "../components/Helmet/Helmet";
 import ReactPaginate from "react-paginate";
 import "../styles/pagination.css";
 
-const Pizzas = () => {
+const Menus = () => {
   const [pageNumber, setPageNumber] = useState(0);
 
   const searchedProduct = products;
@@ -27,7 +27,7 @@ const Pizzas = () => {
   };
 
   return (
-    <Helmet title="All Pizzas">
+    <Helmet title="Menu">
       <Container>
         <Row>
           {displayPage.map((item) => (
@@ -57,4 +57,4 @@ const Pizzas = () => {
   );
 };
 
-export default Pizzas;
+export default Menus;
