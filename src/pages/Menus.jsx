@@ -8,6 +8,8 @@ import Helmet from "../components/Helmet/Helmet";
 import ReactPaginate from "react-paginate";
 import "../styles/pagination.css";
 
+import { categoryListApi } from "../api/main";
+
 const Menus = () => {
   const [pageNumber, setPageNumber] = useState(0);
 
@@ -25,6 +27,17 @@ const Menus = () => {
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
+
+  React.useEffect(() => {
+    categoryListApi()
+      .then((res) => {
+        console.log(res, res.data);
+      })
+      .catch((err) => {
+        alert('request error.');
+        console.error(err);
+      })
+  }, []);
 
   return (
     <Helmet title="Menu">
