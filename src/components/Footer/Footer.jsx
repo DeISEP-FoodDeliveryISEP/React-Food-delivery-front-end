@@ -9,8 +9,8 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer__logo">
         <img src={logo} alt="logo" />
-        <h5>MyPizza</h5>
-        <p>Best Pizzas in town, try it out!</p>
+        <h5>Tasty Treats</h5>
+        <p>Best food in town, all types of cuisine, try it out!</p>
       </div>
       <div>
         <h5 className="footer__title mb-3">Delivery Time</h5>
