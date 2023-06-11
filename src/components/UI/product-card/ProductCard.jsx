@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import defaultItemImage from "../../../assets/images/defaultItemImage.png";
 
 const ProductCard = (props) => {
-  const { id, name, image, price } = props.item;
+  const { id, name, image, price, description } = props.item;
   const dispatch = useDispatch();
 
   const addToCart = () => {
@@ -34,6 +34,9 @@ const ProductCard = (props) => {
         <h5>
           {name}
         </h5>
+        <div className="product__description">
+          {description}
+        </div>
       </div>
       <div className="d-flex flex-column align-items-center justify-content-between">
         <span className="product__price mb-2">
