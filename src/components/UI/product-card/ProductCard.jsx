@@ -29,7 +29,8 @@ const ProductCard = (props) => {
         id,
         name,
         image,
-        price
+        price,
+        dishFlavor: selectedDishFlavor.map((flavor => (`${flavor.name}:${flavor.selectedDishFlavor}`)))
       })
     );
   };
@@ -92,7 +93,7 @@ const ProductCard = (props) => {
           </div>
           <>
             {
-              <Button className="addTOCART__btn rounded-pill">Add to Cart</Button>
+              <Button className="addTOCART__btn rounded-pill" onClick={addToCart}>Add to Cart</Button>
             }
           </>
         </ModalFooter>

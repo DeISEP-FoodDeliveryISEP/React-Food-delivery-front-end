@@ -6,7 +6,6 @@
 
 .cart__item:hover {
   background-color: rgba(230, 230, 230, 0.994);
-  cursor: pointer;
 }
 
 .cart__product-title {

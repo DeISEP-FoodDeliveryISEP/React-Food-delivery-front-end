@@ -37,11 +37,12 @@ const cartSlice = createSlice({
     addItem(state, action) {
       const newItem = action.payload;
       const id = action.payload.id;
-      const extraIngredients = action.payload.extraIngredients;
+      const dishFlavor = action.payload.dishFlavor;
       const existingItem = state.cartItems.find((item) => item.id === id);
-
+      console.log('add:', newItem);
 
       if (!existingItem) {
+        console.log('absolute new!');
         state.cartItems.push({
           id: newItem.id,
           name: newItem.name,
@@ -49,15 +50,16 @@ const cartSlice = createSlice({
           price: newItem.price,
           quantity: 1,
           totalPrice: newItem.price,
-          extraIngredients: newItem.extraIngredients
+          dishFlavor: newItem.dishFlavor
         });
         state.totalQuantity++;
 
-      } else if (existingItem && (JSON.stringify(existingItem.extraIngredients) === JSON.stringify(extraIngredients))) {
+      } else if (existingItem && (JSON.stringify(existingItem.dishFlavor) === JSON.stringify(dishFlavor))) {
+        console.log('not new, same flavors!', existingItem, newItem);
         state.totalQuantity++;
         existingItem.quantity++;
       } else {
-
+        console.log('something else!', newItem);
         const value = JSON.parse(localStorage.getItem("cartItems"));
         let index = value.findIndex(s => s.id === existingItem.id);
         const newValue = {
@@ -67,7 +69,7 @@ const cartSlice = createSlice({
           price: existingItem.price,
           quantity: 1,
           totalPrice: existingItem.price,
-          extraIngredients: extraIngredients
+          dishFlavor: dishFlavor
         }
         state.cartItems.splice(index, 1, newValue);
         state.totalQuantity = state.cartItems.reduce(

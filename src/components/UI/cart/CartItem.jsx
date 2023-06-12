@@ -13,7 +13,7 @@ import {
 } from "../../../common/utils";
 const CartItem = ({ item, onClose }) => {
   console.log('cart:', item);
-  const { id, name, price, image, quantity, extraIngredients } = item;
+  const { id, name, price, image, quantity, dishFlavor } = item;
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -25,6 +25,7 @@ const CartItem = ({ item, onClose }) => {
         name,
         price,
         image,
+        dishFlavor
       })
     );
     event.stopPropagation();
@@ -40,13 +41,13 @@ const CartItem = ({ item, onClose }) => {
     event.stopPropagation();
   };
 
-  const handlePizzaSelection = () => {
-    navigate(`/pizzas/${id}`);
-    onClose();
-  }
+  // const handlePizzaSelection = () => {
+  //   navigate(`/pizzas/${id}`);
+  //   onClose();
+  // }
 
   return (
-    <ListGroupItem className="border-0 cart__item" onClick={handlePizzaSelection}>
+    <ListGroupItem className="border-0 cart__item">
       <div className="cart__item-info d-flex gap-4">
         <img src={formatImageLink(image)} onError={({ currentTarget }) => { currentTarget.src = defaultItemImage }} alt="food" />
 
@@ -54,15 +55,15 @@ const CartItem = ({ item, onClose }) => {
         <div className="cart__product-info w-100 d-flex align-items-center gap-4 justify-content-between">
           <div>
             <h6 className="cart__product-title">{name}</h6>
-            <p className=" d-flex align-items-center gap-5 cart__product-price">
+            <p className=" d-flex align-items-center gap-5 cart__product-price mb-0">
               {quantity}x <span>{formatPrice(price)}</span>
             </p>
-            <div className="d-flex flex-column">
+            <div className="d-flex flex-column small mb-1">
               {
-                extraIngredients !== undefined && (
-                  Array.from(extraIngredients).map(value => {
+                dishFlavor !== undefined && (
+                  Array.from(dishFlavor).map(value => {
                     return (
-                      <span key={value} className="m-0">
+                      <span key={value} className="">
                         {value}
                       </span>
                     )

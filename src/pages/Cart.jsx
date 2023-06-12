@@ -4,7 +4,7 @@ import CommonSection from "../components/UI/common-section/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
 import "../styles/cart-page.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Badge } from "reactstrap";
 import { cartActions } from "../store/shopping-cart/cartSlice";
 import { Link } from "react-router-dom";
 import { formatImageLink, formatPrice } from "../common/utils";
@@ -58,7 +58,7 @@ const Cart = () => {
 };
 
 const Tr = (props) => {
-  const { id, image, name, price, quantity } = props.item;
+  const { id, image, name, price, quantity, dishFlavor } = props.item;
   const dispatch = useDispatch();
 
   const deleteItem = () => {
@@ -71,6 +71,13 @@ const Tr = (props) => {
       </td>
       <td className="text-center">{name}</td>
       <td className="text-center">{formatPrice(price)}</td>
+      <td className="text-center">{Array.from(dishFlavor).map(value => {
+        return (
+          <Badge key={value} pill color="light" className="text-dark">
+            {value}
+          </Badge>
+        )
+      })}</td>
       <td className="text-center">{quantity}px</td>
       <td className="text-center cart__item-del">
         <i className="ri-delete-bin-line" onClick={deleteItem}></i>
