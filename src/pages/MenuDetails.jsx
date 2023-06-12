@@ -16,18 +16,18 @@ import "../styles/product-card.css";
 import ProductCard from "../components/UI/product-card/ProductCard";
 
 const ExtraIngredients = {
-	MUSHROOMS: "Mushrooms",
-	ONION: "Onion",
-	PEPPER: "Pepper",
-	PINAPPLE: "Pinapple", 
-  TUNA: "Tuna", 
-  MEAT: "Meat", 
-  CHEESE: "Cheese", 
-  HOTSAUCE: "Hot Sauce", 
+  MUSHROOMS: "Mushrooms",
+  ONION: "Onion",
+  PEPPER: "Pepper",
+  PINAPPLE: "Pinapple",
+  TUNA: "Tuna",
+  MEAT: "Meat",
+  CHEESE: "Cheese",
+  HOTSAUCE: "Hot Sauce",
   CORN: "Corn"
 }
 
-const PizzaDetails = () => {
+const MenuDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [extraIngredients, setExtraIngredients] = useState([]);
@@ -38,23 +38,23 @@ const PizzaDetails = () => {
   const { title, price, category, desc, image01 } = product;
   const relatedProduct = products.filter((item) => category === item.category);
 
-  
+
   useEffect(() => {
     const existingPizza = cartProducts.find(item => item.id === id);
-    if(existingPizza) {
+    if (existingPizza) {
       setExtraIngredients(existingPizza.extraIngredients);
     } else {
       setExtraIngredients([]);
     }
   }, [cartProducts, id]);
 
-  
+
   const addItem = () => {
     setIsUpdateNotificationDisplayed(true);
-      setTimeout(function(){
-        setIsUpdateNotificationDisplayed(false);
-      },3000)
-    
+    setTimeout(function () {
+      setIsUpdateNotificationDisplayed(false);
+    }, 3000)
+
     dispatch(
       cartActions.addItem({
         id,
@@ -63,22 +63,22 @@ const PizzaDetails = () => {
         image01,
         extraIngredients
       })
-      );
+    );
 
-    };
-    
-    useEffect(() => {
-      setPreviewImg(product.image01);
-      window.scrollTo(0, 0);
-    }, [product]);
+  };
 
-    function updateExtraIngredients(ingredient) {
-      if(extraIngredients.includes(ingredient)) {
-        setExtraIngredients(extraIngredients.filter(item => item !== ingredient));
-      } else {
-        setExtraIngredients(previousState => [...previousState, ingredient]);
-      }
+  useEffect(() => {
+    setPreviewImg(product.image01);
+    window.scrollTo(0, 0);
+  }, [product]);
+
+  function updateExtraIngredients(ingredient) {
+    if (extraIngredients.includes(ingredient)) {
+      setExtraIngredients(extraIngredients.filter(item => item !== ingredient));
+    } else {
+      setExtraIngredients(previousState => [...previousState, ingredient]);
     }
+  }
 
   return (
     <Helmet title="Product-details">
@@ -145,7 +145,7 @@ const PizzaDetails = () => {
               <div className="extraIngredientsGrid">
                 {(Object.values(ExtraIngredients)).map((ingredient) => {
                   return (
-                    <ExtraIngredient isChecked={extraIngredients.includes(ingredient)}  key={ingredient} onSelect={ingredient => updateExtraIngredients(ingredient)} ingredient={ingredient}></ExtraIngredient>
+                    <ExtraIngredient isChecked={extraIngredients.includes(ingredient)} key={ingredient} onSelect={ingredient => updateExtraIngredients(ingredient)} ingredient={ingredient}></ExtraIngredient>
                   )
                 })}
               </div>
@@ -174,4 +174,4 @@ const PizzaDetails = () => {
   );
 };
 
-export default PizzaDetails;
+export default MenuDetails;
