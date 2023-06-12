@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "../../../styles/product-card.css";
 
@@ -6,16 +6,20 @@ import "../../../styles/product-card.css";
 
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/shopping-cart/cartSlice";
-import { formatImageLink } from "../../../common/utils";
+import { formatImageLink, formatPrice } from "../../../common/utils";
 
 import { Link } from "react-router-dom";
 
 import defaultItemImage from "../../../assets/images/defaultItemImage.png";
 
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
 const ProductCard = (props) => {
-  const { id, name, image, price, description } = props.item;
+  const { id, name, image, price, description, flavors } = props.item;
+  const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
 
+  const toggle = () => { setModal(!modal) };
   const addToCart = () => {
     dispatch(
       cartActions.addItem({
@@ -28,7 +32,7 @@ const ProductCard = (props) => {
   };
 
   return (
-    <div className="product__item d-flex flex-column justify-content-between">
+    <div className="product__item d-flex flex-column justify-content-between" onClick={toggle}>
       <div className="product__content">
         <img className="product__img" src={formatImageLink(image)} onError={({ currentTarget }) => { currentTarget.src = defaultItemImage }} alt="food" />
         <h5>
@@ -45,11 +49,34 @@ const ProductCard = (props) => {
             currency: 'EUR',
           }).format(price / 100)}
         </span>
-        <button className="addTOCART__btn" onClick={addToCart}>
+        {/* <button className="addTOCART__btn" onClick={addToCart}>
           Add to Cart
-        </button>
+        </button> */}
       </div>
+      <Modal isOpen={modal} toggle={toggle} centered scrollable fullscreen="sm">
+        <ModalHeader toggle={toggle} className="d-block d-sm-none d-flex flex-end border-0"></ModalHeader>
+        <ModalBody>
+          <img src={formatImageLink(image)} className="img-fluid rounded mb-3" alt={`product-${id}`}></img>
+          <h5>{name}</h5>
+          {description}
+        </ModalBody>
+        <ModalFooter className="border-0 d-flex justify-content-between">
+          <div className="product__price mb-2">
+            {formatPrice(price)}
+          </div>
+          <>
+            {
+              flavors.length === 0
+                ?
+                <Button className="addTOCART__btn rounded-pill">Add to Cart</Button>
+                :
+                <Button className="addTOCART__btn rounded-pill">Select Flavors</Button>
+            }
+          </>
+        </ModalFooter>
+      </Modal>
     </div>
+
   );
 };
 

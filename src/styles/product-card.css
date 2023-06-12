@@ -43,12 +43,15 @@
 }
 
 .addTOCART__btn {
-  border: none;
+  border: none !important;
   padding: 7px 25px;
-  background: #df2020;
+  background: var(--theme-red) !important;
   color: #fff;
   border-radius: 5px;
   font-size: 0.9rem;
+}
+.addTOCART__btn:hover {
+  background: var(--theme-dark-red) !important;
 }
 
 @media only screen and (max-width: 992px) {
