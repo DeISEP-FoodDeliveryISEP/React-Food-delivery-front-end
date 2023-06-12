@@ -12,11 +12,14 @@ import { Link } from "react-router-dom";
 
 import defaultItemImage from "../../../assets/images/defaultItemImage.png";
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup } from 'reactstrap';
 
 const ProductCard = (props) => {
   const { id, name, image, price, description, flavors } = props.item;
   const [modal, setModal] = useState(false);
+  const [dishFlavors, setDishFlavors] = useState(flavors.map(flavor => ({ ...flavor, value: JSON.parse(flavor.value) })));
+  const [selectedDishFlavor, setSelectedDishFlavor] = useState(flavors.map(flavor => ({ ...flavor, selectedDishFlavor: JSON.parse(flavor.value)[0] })));
+
   const dispatch = useDispatch();
 
   const toggle = () => { setModal(!modal) };
@@ -57,8 +60,31 @@ const ProductCard = (props) => {
         <ModalHeader toggle={toggle} className="d-block d-sm-none d-flex flex-end border-0"></ModalHeader>
         <ModalBody>
           <img src={formatImageLink(image)} className="img-fluid rounded mb-3" alt={`product-${id}`}></img>
-          <h5>{name}</h5>
+          <h3>{name}</h3>
           {description}
+          <div>
+            {dishFlavors.map((flavor, flavorIndex) =>
+            (<div className="mt-2">
+              <h5>Select {flavor.name}</h5>
+              <ButtonGroup>
+                {flavor.value.map((flavorValue, flavorValueIndex) =>
+                  <Button
+                    className="me-2 rounded flavor__btn"
+                    onClick={() => {
+                      setSelectedDishFlavor(selectedDishFlavor.map(
+                        (flavor) => ({ ...flavor, selectedDishFlavor: flavorValue })
+                      ));
+                    }}
+                    active={selectedDishFlavor?.[flavorIndex]?.selectedDishFlavor === flavorValue}
+                    outline
+                    size="sm"
+                  >
+                    {flavorValue}
+                  </Button>)}
+              </ButtonGroup>
+            </div>)
+            )}
+          </div>
         </ModalBody>
         <ModalFooter className="border-0 d-flex justify-content-between">
           <div className="product__price mb-2">
@@ -66,11 +92,7 @@ const ProductCard = (props) => {
           </div>
           <>
             {
-              flavors.length === 0
-                ?
-                <Button className="addTOCART__btn rounded-pill">Add to Cart</Button>
-                :
-                <Button className="addTOCART__btn rounded-pill">Select Flavors</Button>
+              <Button className="addTOCART__btn rounded-pill">Add to Cart</Button>
             }
           </>
         </ModalFooter>

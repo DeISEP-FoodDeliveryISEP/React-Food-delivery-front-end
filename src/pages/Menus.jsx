@@ -85,7 +85,7 @@ const Menus = () => {
               key={item.id}
               className="mb-4 mt-4"
             >
-              <ProductCard item={item} />
+              <ProductCard item={item} key={item.id} />
             </Col>
           ))}
         </Row>

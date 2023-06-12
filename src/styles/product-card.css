@@ -54,6 +54,22 @@
   background: var(--theme-dark-red) !important;
 }
 
+.flavor__btn {
+  border-color: var(--theme-red) !important;
+  color: var(--theme-red) !important;
+}
+
+.flavor__btn.active {
+  background-color: var(--theme-red) !important;
+  color: white !important;
+}
+
+.flavor__btn:hover {
+  border-color: var(--theme-dark-red) !important;
+  background-color: var(--theme-dark-red) !important;
+  color: white !important;
+}
+
 @media only screen and (max-width: 992px) {
   .product__content h5 a {
     font-size: 0.8rem;
