@@ -7,7 +7,7 @@ import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 import ExtraIngredient from '../components/ExtraIngredient/ExtraIngredient.jsx'
 import { useDispatch } from "react-redux";
-import { cartActions } from "../store/shopping-cart/cartSlice";
+import { addToCart, cartActions } from "../store/shopping-cart/cartSlice";
 import { useSelector } from "react-redux";
 
 import "../styles/product-details.css";
@@ -56,7 +56,7 @@ const MenuDetails = () => {
     }, 3000)
 
     dispatch(
-      cartActions.addItem({
+      addToCart({
         id,
         title,
         price,

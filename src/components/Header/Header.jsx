@@ -7,6 +7,7 @@ import { NavLink, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { cartUiActions } from "../../store/shopping-cart/cartUiSlice";
+import { fetchCart } from "../../store/shopping-cart/cartSlice";
 
 import "../../styles/header.css";
 
@@ -35,6 +36,14 @@ const Header = () => {
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const dispatch = useDispatch();
 
+  const cartStatus = useSelector(state => state.cart.status);
+
+  React.useEffect(() => {
+    if (cartStatus === 'idle') {
+      dispatch(fetchCart())
+    }
+  }, [cartStatus, dispatch]);
+
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
   let navigate = useNavigate();
 
@@ -44,20 +53,20 @@ const Header = () => {
 
   console.log(menuRef?.current?.classList.value);
 
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (
-        document.body.scrollTop > 80 ||
-        document.documentElement.scrollTop > 80
-      ) {
-        headerRef.current.classList.add("header__shrink");
-      } else {
-        headerRef.current.classList.remove("header__shrink");
-      }
-    });
+  // useEffect(() => {
+  //   window.addEventListener("scroll", () => {
+  //     if (
+  //       document.body.scrollTop > 80 ||
+  //       document.documentElement.scrollTop > 80
+  //     ) {
+  //       headerRef.current.classList.add("header__shrink");
+  //     } else {
+  //       headerRef.current.classList.remove("header__shrink");
+  //     }
+  //   });
 
-    return () => window.removeEventListener("scroll");
-  }, []);
+  //   return () => window.removeEventListener("scroll");
+  // }, []);
 
   return (
     <header className="header" ref={headerRef}>

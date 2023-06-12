@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../../../styles/cart-item.css";
 
 import { useDispatch } from "react-redux";
-import { cartActions } from "../../../store/shopping-cart/cartSlice";
+import { cartActions, addToCart } from "../../../store/shopping-cart/cartSlice";
 
 import defaultItemImage from "../../../assets/images/defaultItemImage.png";
 import {
@@ -20,7 +20,7 @@ const CartItem = ({ item, onClose }) => {
 
   const incrementItem = (event) => {
     dispatch(
-      cartActions.addItem({
+      addToCart({
         id,
         name,
         price,
@@ -41,10 +41,6 @@ const CartItem = ({ item, onClose }) => {
     event.stopPropagation();
   };
 
-  // const handlePizzaSelection = () => {
-  //   navigate(`/pizzas/${id}`);
-  //   onClose();
-  // }
 
   return (
     <ListGroupItem className="border-0 cart__item">
@@ -61,7 +57,7 @@ const CartItem = ({ item, onClose }) => {
             <div className="d-flex flex-column small mb-1">
               {
                 dishFlavor !== undefined && (
-                  Array.from(dishFlavor).map(value => {
+                  JSON.parse(dishFlavor).map(value => {
                     return (
                       <span key={value} className="">
                         {value}

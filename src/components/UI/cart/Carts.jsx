@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 import { useDispatch, useSelector } from "react-redux";
 import { cartUiActions } from "../../../store/shopping-cart/cartUiSlice";
+import { fetchCart } from "../../../store/shopping-cart/cartSlice";
 import { formatPrice } from "../../../common/utils";
 import "../../../styles/shopping-cart.css";
 

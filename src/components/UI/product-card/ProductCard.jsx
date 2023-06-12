@@ -5,7 +5,7 @@ import "../../../styles/product-card.css";
 // import productImg from "../../../assets/images/product_2.1.jpg";
 
 import { useDispatch } from "react-redux";
-import { cartActions } from "../../../store/shopping-cart/cartSlice";
+import { cartActions, addToCart } from "../../../store/shopping-cart/cartSlice";
 import { formatImageLink, formatPrice } from "../../../common/utils";
 
 import { Link } from "react-router-dom";
@@ -23,14 +23,14 @@ const ProductCard = (props) => {
   const dispatch = useDispatch();
 
   const toggle = () => { setModal(!modal) };
-  const addToCart = () => {
+  const addToCartFunc = () => {
     dispatch(
-      cartActions.addItem({
+      addToCart({
         id,
         name,
         image,
         price,
-        dishFlavor: selectedDishFlavor.map((flavor => (`${flavor.name}:${flavor.selectedDishFlavor}`)))
+        dishFlavor: JSON.stringify(selectedDishFlavor.map((flavor => (`${flavor.name}:${flavor.selectedDishFlavor}`))))
       })
     );
   };
@@ -93,7 +93,7 @@ const ProductCard = (props) => {
           </div>
           <>
             {
-              <Button className="addTOCART__btn rounded-pill" onClick={addToCart}>Add to Cart</Button>
+              <Button className="addTOCART__btn rounded-pill" onClick={addToCartFunc}>Add to Cart</Button>
             }
           </>
         </ModalFooter>
