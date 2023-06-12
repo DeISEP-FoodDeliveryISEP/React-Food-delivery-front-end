@@ -65,7 +65,7 @@ const ProductCard = (props) => {
           <div>
             {dishFlavors.map((flavor, flavorIndex) =>
             (<div className="mt-2">
-              <h5>Select {flavor.name}</h5>
+              <h5>Select <span style={{ color: "#971515" }}>{flavor.name}</span></h5>
               <ButtonGroup>
                 {flavor.value.map((flavorValue, flavorValueIndex) =>
                   <Button
