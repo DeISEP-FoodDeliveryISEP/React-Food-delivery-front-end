@@ -29,32 +29,34 @@ const Menus = () => {
   }, []);
 
   React.useEffect(() => {
-    const catType = activeCategory?.type === 2 ? 2 : 1;
-    if (catType === 1) {
-      dishListApi({ categoryId: activeCategory.id, status: 1 })
-        .then((res) => {
-          const result = res.data.map((item) => ({ ...item, type: 'dish' }))
-          console.log(res, result);
-          setDisplayItems(result);
-        })
-        .catch((err) => {
-          alert('request error.');
-          console.error(err);
-        })
+    console.log('trigger:', activeCategory);
+    if (activeCategory !== "") {
+      const catType = activeCategory?.type === 2 ? 2 : 1;
+      if (catType === 1) {
+        dishListApi({ categoryId: activeCategory.id, status: 1 })
+          .then((res) => {
+            const result = res.data.map((item) => ({ ...item, type: 'dish' }))
+            console.log(res, result);
+            setDisplayItems(result);
+          })
+          .catch((err) => {
+            alert('request error.');
+            console.error(err);
+          })
+      }
+      else {
+        setmealListApi({ categoryId: activeCategory.id, status: 1 })
+          .then((res) => {
+            const result = res.data.map((item) => ({ ...item, type: 'setmeal' }))
+            console.log('received meal:', res, result);
+            setDisplayItems(result);
+          })
+          .catch((err) => {
+            alert('request error.');
+            console.error(err);
+          })
+      }
     }
-    else {
-      setmealListApi({ categoryId: activeCategory.id, status: 1 })
-        .then((res) => {
-          const result = res.data.map((item) => ({ ...item, type: 'setmeal' }))
-          console.log('received meal:', res, result);
-          setDisplayItems(result);
-        })
-        .catch((err) => {
-          alert('request error.');
-          console.error(err);
-        })
-    }
-
   }, [activeCategory]);
 
   return (
