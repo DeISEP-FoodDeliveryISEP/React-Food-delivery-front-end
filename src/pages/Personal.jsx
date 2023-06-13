@@ -62,7 +62,7 @@ const Personal = () => {
                     <div>
                       <div>Name: {addressItem.sex === "0" ? "Ms." : "Mr."} {addressItem.consignee}</div>
                       <div>Phone Number: {addressItem.phone}</div>
-                      {addressItem.label !== null ? `Label: ${addressItem.label}` : ""}
+                      {addressItem.label !== null ? `Label: ${addressItem.label === '公司' ? 'office' : 'home'}` : ""}
                     </div>
                   </CardBody>
                   <CardFooter className="border-0 d-flex justify-content-end">

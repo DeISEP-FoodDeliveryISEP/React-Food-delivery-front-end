@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 
 import CommonSection from "../components/UI/common-section/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
 import "../styles/cart-page.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col, Badge } from "reactstrap";
+import { Container, Row, Col, Badge, Card, CardBody, CardTitle, CardFooter, Button } from "reactstrap";
 import { removeItemFromCart } from "../store/shopping-cart/cartSlice";
 import { Link } from "react-router-dom";
 import { formatImageLink, formatPrice } from "../common/utils";
+import { getDefaultAddressApi } from "../api/address";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const [addressData, setAddressData] = useState({});
+
+  const getDefaultAddress = () => {
+    getDefaultAddressApi()
+      .then((res) => {
+        if (res.code === 1) {
+          setAddressData(res.data);
+        }
+      })
+  }
+
+  React.useEffect(() => {
+    getDefaultAddress();
+  }, []);
   return (
     <Helmet title="Cart">
       <CommonSection title="Your Cart" />
@@ -39,7 +54,24 @@ const Cart = () => {
                   Subtotal:
                   <span className="cart__subtotal">{formatPrice(totalAmount)}</span>
                 </h6>
-                <p>Taxes and shipping will calculate at checkout</p>
+                {/* <p>Taxes and shipping will calculate at checkout</p> */}
+                <div className="mt-4">
+                  <h5>Delivery Address</h5>
+                  <p>Your default address was chosen as the delivery address. Edit in the personal page.</p>
+                  {addressData?.detail ? <Card className="">
+                    <CardBody className="d-flex flex-column justify-content-between">
+                      <CardTitle tag="h6">
+                        {addressData.detail}
+                      </CardTitle>
+                      <div>
+                        <div>Name: {addressData.sex === "0" ? "Ms." : "Mr."} {addressData.consignee}</div>
+                        <div>Phone Number: {addressData.phone}</div>
+                        {addressData.label !== null ? `Label: ${addressData.label === '公司' ? 'office' : 'home'}` : ""}
+                      </div>
+                    </CardBody>
+                  </Card>
+                    : <></>}
+                </div>
                 <div className="cart__page-btn">
                   <button className="addTOCart__btn me-4">
                     <Link to="/pizzas">Continue Shopping</Link>
