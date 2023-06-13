@@ -78,10 +78,10 @@ export function clearCartApi() {
     })
 }
 
-//获取套餐的全部菜品
+// get setmeal details
 export function setMealDishDetailsApi(id) {
     return $axios({
-        'url': `/setmeal/dish/${id}`,
+        'url': `/setmeal/listById?id=${id}`,
         'method': 'get',
     })
 }

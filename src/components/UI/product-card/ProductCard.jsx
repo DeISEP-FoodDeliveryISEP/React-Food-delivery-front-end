@@ -13,14 +13,26 @@ import { Link } from "react-router-dom";
 import defaultItemImage from "../../../assets/images/defaultItemImage.png";
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup } from 'reactstrap';
+import { setMealDishDetailsApi } from "../../../api/main";
 
 const ProductCard = (props) => {
-  const { id, name, image, price, description, flavors } = props.item;
+  const { id, name, image, price, description, flavors, type } = props.item;
   const [modal, setModal] = useState(false);
-  const [dishFlavors, setDishFlavors] = useState(flavors.map(flavor => ({ ...flavor, value: JSON.parse(flavor.value) })));
-  const [selectedDishFlavor, setSelectedDishFlavor] = useState(flavors.map(flavor => ({ ...flavor, selectedDishFlavor: JSON.parse(flavor.value)[0] })));
-
+  // if is setmeal set dishFlavors to blank
+  const [dishFlavors, setDishFlavors] = useState(type === 'dish' ? flavors.map(flavor => ({ ...flavor, value: JSON.parse(flavor.value) })) : []);
+  const [selectedDishFlavor, setSelectedDishFlavor] = useState(type === 'dish' ? flavors.map(flavor => ({ ...flavor, selectedDishFlavor: JSON.parse(flavor.value)[0] })) : []);
+  const [setmealDishes, setSetmealDishes] = useState([]);
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (type === 'setmeal') {
+      setMealDishDetailsApi(id)
+        .then((res) => {
+          setSetmealDishes(res.data.setmealDishes);
+          console.log('setmeal dishes:', res.data);
+        });
+    }
+  }, [type, id]);
 
   const toggle = () => { setModal(!modal) };
   const addToCartFunc = () => {
@@ -30,7 +42,8 @@ const ProductCard = (props) => {
         name,
         image,
         price,
-        dishFlavor: JSON.stringify(selectedDishFlavor.map((flavor => (`${flavor.name}:${flavor.selectedDishFlavor}`))))
+        dishFlavor: JSON.stringify(selectedDishFlavor.map((flavor => (`${flavor.name}:${flavor.selectedDishFlavor}`)))),
+        type
       })
     );
     toggle();
@@ -86,6 +99,23 @@ const ProductCard = (props) => {
               </ButtonGroup>
             </div>)
             )}
+            {type === 'setmeal' ?
+              <div className="mt-2">
+                This set contains the items below:
+                {
+                  setmealDishes.map((menuItem) => (
+                    <div>
+                      {menuItem.name}: <span style={{ fontWeight: "bold", color: "#FFD643" }}>{formatPrice(menuItem.price)}</span>
+                      {/* <img src={formatImageLink(menuItem.image)} className="w-50 rounded mb-3" alt={`product-${menuItem.id}`}></img> */}
+                    </div>
+                  ))
+                }
+                <div className="mt-3">You have saved: <span className="text-success">{formatPrice(setmealDishes.reduce((sum, currentItem) => (sum += currentItem.price), 0) - price)}</span></div>
+              </div>
+              : ""}
+          </div>
+          <div>
+
           </div>
         </ModalBody>
         <ModalFooter className="border-0 d-flex justify-content-between">

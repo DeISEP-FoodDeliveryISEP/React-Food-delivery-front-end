@@ -33,8 +33,9 @@ const Menus = () => {
     if (catType === 1) {
       dishListApi({ categoryId: activeCategory.id, status: 1 })
         .then((res) => {
-          console.log(res, res.data);
-          setDisplayItems(res.data);
+          const result = res.data.map((item) => ({ ...item, type: 'dish' }))
+          console.log(res, result);
+          setDisplayItems(result);
         })
         .catch((err) => {
           alert('request error.');
@@ -44,8 +45,9 @@ const Menus = () => {
     else {
       setmealListApi({ categoryId: activeCategory.id, status: 1 })
         .then((res) => {
-          console.log(res, res.data);
-          setDisplayItems(res.data);
+          const result = res.data.map((item) => ({ ...item, type: 'setmeal' }))
+          console.log('received meal:', res, result);
+          setDisplayItems(result);
         })
         .catch((err) => {
           alert('request error.');
