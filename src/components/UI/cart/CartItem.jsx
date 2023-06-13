@@ -12,8 +12,7 @@ import {
   formatImageLink, formatPrice
 } from "../../../common/utils";
 const CartItem = ({ item, onClose }) => {
-  console.log('cart:', item);
-  const { id, name, price, image, quantity, dishFlavor, cartId } = item;
+  const { name, price, image, quantity, dishFlavor, cartId, dishId, setmealId } = item;
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -21,11 +20,13 @@ const CartItem = ({ item, onClose }) => {
   const incrementItem = (event) => {
     dispatch(
       addToCart({
-        id,
         name,
         price,
         image,
-        dishFlavor
+        dishFlavor,
+        cartId: cartId,
+        dishId,
+        setmealId
       })
     );
     event.stopPropagation();

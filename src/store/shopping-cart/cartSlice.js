@@ -162,7 +162,7 @@ const cartSlice = createSlice({
         // Add any fetched posts to the array
         const data = action.payload;
         state.cartItems = data.map(item => ({
-          id: item.dishId,
+          id: item.id,
           name: item.name,
           image: item.image,
           price: item.amount * 100,
@@ -188,7 +188,7 @@ const cartSlice = createSlice({
         // Add any fetched posts to the array
         const data = action.payload;
         state.cartItems = data.map(item => ({
-          id: item.dishId ? item.dishId : item.setmealId,
+          id: item.id,
           name: item.name,
           image: item.image,
           price: item.amount * 100,
@@ -220,19 +220,20 @@ export const addToCart = createAsyncThunk(
   'cart/addToCart',
   // The payload creator receives the partial `{title, content, user}` object
   async (newItem) => {
-    // We send the initial data to the fake API server
+    // We send the initial data to the server
     let params = {
       amount: newItem.price / 100,
       dishFlavor: newItem.dishFlavor,
-      dishId: undefined,
-      setmealId: undefined,
+      dishId: newItem.dishId || undefined,
+      setmealId: newItem.setmealId || undefined,
       name: newItem.name,
-      image: newItem.image
+      image: newItem.image,
+      id: newItem.cartId
     }
     // check if menu or setmeal
     if (newItem.type === 'dish')
       params.dishId = newItem.id;
-    else
+    else if (newItem.type === 'setmeal')
       params.setmealId = newItem.id;
     const response = await addCartApi(params);
     // The response includes the complete post object, including unique ID
