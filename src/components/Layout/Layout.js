@@ -14,6 +14,7 @@ import Carts from "../UI/cart/Carts.jsx";
 
 import { useSelector } from "react-redux";
 import Login from "../../pages/Login.jsx";
+import Personal from "../../pages/Personal.jsx";
 
 const Layout = () => {
   return (
@@ -25,6 +26,7 @@ const Layout = () => {
           <Route path="/menu" element={<Menus />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/personal" element={<Personal />} />
         </Route>
         <Route path="/login" element={<Login />}></Route>
       </Routes>

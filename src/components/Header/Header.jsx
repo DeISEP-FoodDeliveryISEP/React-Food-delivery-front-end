@@ -25,8 +25,8 @@ const nav__links = [
     path: "/cart",
   },
   {
-    display: "Contact",
-    path: "/contact",
+    display: "Personal",
+    path: "/personal",
   },
 ];
 
