@@ -67,3 +67,15 @@
     margin: 0 auto;
   }
 }
+
+.login__btn {
+  border-color: var(--theme-red) !important;
+  background: var(--theme-red) !important;
+  color: white !important;
+}
+
+.login__btn:hover {
+  border-color: var(--theme-dark-red) !important;
+  background-color: var(--theme-dark-red) !important;
+  color: white !important;
+}
