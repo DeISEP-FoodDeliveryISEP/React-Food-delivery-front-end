@@ -109,7 +109,7 @@ const Personal = () => {
         </div>
         <Modal isOpen={modal} toggle={toggle} centered>
           <ModalBody>
-            Rate: <Input></Input>
+            Rate: <Input type="number" min="0" max="5"></Input>
             Comment: <Input></Input>
             <Button className="mt-2">Submit</Button>
           </ModalBody>
