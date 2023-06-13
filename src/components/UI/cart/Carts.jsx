@@ -21,7 +21,7 @@ const Carts = () => {
   return (
     <div className="cart__container" onClick={toggleCart}>
       <ListGroup onClick={(event) => event.stopPropagation()} className="cart">
-        <div className="d-flex justify-content-end my-1 me-1"><Button size="sm" className="rounded outline" onClick={() => { dispatch(clearCart()) }}>Clear</Button></div>
+        <div className="d-flex justify-content-end my-1 me-1"><Button size="sm" className="rounded outline" color="light" onClick={() => { dispatch(clearCart()) }}>Clear</Button></div>
         <div className="cart__closeButton">
           <span onClick={toggleCart}>
             <i className="ri-close-fill"></i>
@@ -43,7 +43,7 @@ const Carts = () => {
             Subtotal : <span>{formatPrice(totalAmount)}</span>
           </h6>
           <button>
-            <Link to="/checkout" onClick={toggleCart}>
+            <Link to="/cart" onClick={toggleCart}>
               Checkout
             </Link>
           </button>
