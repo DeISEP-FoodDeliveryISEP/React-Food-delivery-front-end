@@ -54,6 +54,14 @@ export function updateCartApi(data) {
     })
 }
 
+export function removeCartByIdApi(id) {
+    return $axios({
+        'url': '/shoppingCart/delete',
+        'method': 'delete',
+        params: new URLSearchParams({ id: id })
+    })
+}
+
 //删除购物车的商品
 export function clearCartApi() {
     return $axios({

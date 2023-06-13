@@ -47,7 +47,7 @@ $axios.interceptors.response.use(res => {
   if (res.data.code === 0 && res.data.msg === 'NOTLOGIN') { // redirect to login page
     console.log('---login!---', code)
     localStorage.removeItem('userInfo')
-    // window.top.location.href = '/backend/page/login/login.html'
+    window.top.location.href = '/login'
   } else {
     return res.data
   }

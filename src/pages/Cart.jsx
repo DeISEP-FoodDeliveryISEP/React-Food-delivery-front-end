@@ -5,7 +5,7 @@ import Helmet from "../components/Helmet/Helmet";
 import "../styles/cart-page.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Badge } from "reactstrap";
-import { cartActions } from "../store/shopping-cart/cartSlice";
+import { removeItemFromCart } from "../store/shopping-cart/cartSlice";
 import { Link } from "react-router-dom";
 import { formatImageLink, formatPrice } from "../common/utils";
 
@@ -58,11 +58,11 @@ const Cart = () => {
 };
 
 const Tr = (props) => {
-  const { id, image, name, price, quantity, dishFlavor } = props.item;
+  const { id, image, name, price, quantity, dishFlavor, cartId } = props.item;
   const dispatch = useDispatch();
 
   const deleteItem = () => {
-    dispatch(cartActions.deleteItem(id));
+    dispatch(removeItemFromCart(cartId));
   };
   return (
     <tr>

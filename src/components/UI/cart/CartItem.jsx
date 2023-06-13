@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../../../styles/cart-item.css";
 
 import { useDispatch } from "react-redux";
-import { cartActions, addToCart } from "../../../store/shopping-cart/cartSlice";
+import { cartActions, addToCart, removeItemFromCart } from "../../../store/shopping-cart/cartSlice";
 
 import defaultItemImage from "../../../assets/images/defaultItemImage.png";
 import {
@@ -13,7 +13,7 @@ import {
 } from "../../../common/utils";
 const CartItem = ({ item, onClose }) => {
   console.log('cart:', item);
-  const { id, name, price, image, quantity, dishFlavor } = item;
+  const { id, name, price, image, quantity, dishFlavor, cartId } = item;
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const CartItem = ({ item, onClose }) => {
   };
 
   const deleteItem = (event) => {
-    dispatch(cartActions.deleteItem(id));
+    dispatch(removeItemFromCart(cartId));
     event.stopPropagation();
   };
 

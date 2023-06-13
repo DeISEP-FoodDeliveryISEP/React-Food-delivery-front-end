@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { cartListApi, addCartApi, clearCartApi } from "../../api/main";
+import { cartListApi, addCartApi, clearCartApi, removeCartByIdApi } from "../../api/main";
 
 // const items =
 //   localStorage.getItem("cartItems") !== null
@@ -116,6 +116,7 @@ const cartSlice = createSlice({
         dishFlavor: item.dishFlavor,
         dishId: item.dishId,
         setmealId: item.setMealId,
+        cartId: item.id,
       }))
       state.totalQuantity = state.cartItems.reduce((sum, item) => (sum += item.quantity), 0);
       state.totalAmount = state.cartItems.reduce((sum, item) => (sum += item.price * item.quantity), 0);
@@ -139,6 +140,7 @@ const cartSlice = createSlice({
           dishFlavor: item.dishFlavor,
           dishId: item.dishId,
           setmealId: item.setMealId,
+          cartId: item.id,
         }))
         state.totalQuantity = state.cartItems.reduce((sum, item) => (sum += item.quantity), 0);
         state.totalAmount = state.cartItems.reduce((sum, item) => (sum += item.price * item.quantity), 0);
@@ -164,6 +166,7 @@ const cartSlice = createSlice({
           dishFlavor: item.dishFlavor,
           dishId: item.dishId,
           setmealId: item.setMealId,
+          cartId: item.id,
         }))
         state.totalQuantity = state.cartItems.reduce((sum, item) => (sum += item.quantity), 0);
         state.totalAmount = state.cartItems.reduce((sum, item) => (sum += item.price * item.quantity), 0);
@@ -189,11 +192,38 @@ const cartSlice = createSlice({
           dishFlavor: item.dishFlavor,
           dishId: item.dishId,
           setmealId: item.setMealId,
+          cartId: item.id,
         }))
         state.totalQuantity = state.cartItems.reduce((sum, item) => (sum += item.quantity), 0);
         state.totalAmount = state.cartItems.reduce((sum, item) => (sum += item.price * item.quantity), 0);
       })
       .addCase(clearCart.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
+      // remove by id
+      .addCase(removeItemFromCart.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(removeItemFromCart.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        // Add any fetched posts to the array
+        const data = action.payload;
+        state.cartItems = data.map(item => ({
+          id: item.dishId,
+          name: item.name,
+          image: item.image,
+          price: item.amount * 100,
+          quantity: item.number,
+          dishFlavor: item.dishFlavor,
+          dishId: item.dishId,
+          setmealId: item.setMealId,
+          cartId: item.id,
+        }))
+        state.totalQuantity = state.cartItems.reduce((sum, item) => (sum += item.quantity), 0);
+        state.totalAmount = state.cartItems.reduce((sum, item) => (sum += item.price * item.quantity), 0);
+      })
+      .addCase(removeItemFromCart.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })
@@ -209,7 +239,7 @@ export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
 })
 
 export const addToCart = createAsyncThunk(
-  'posts/addToCart',
+  'cart/addToCart',
   // The payload creator receives the partial `{title, content, user}` object
   async (newItem) => {
     // We send the initial data to the fake API server
@@ -230,9 +260,17 @@ export const addToCart = createAsyncThunk(
 )
 
 export const clearCart = createAsyncThunk(
-  'posts/clearCart',
+  'cart/clearCart',
   async () => {
     const response = await clearCartApi();
+    return response.data;
+  }
+)
+
+export const removeItemFromCart = createAsyncThunk(
+  'cart/removeItemFromCart',
+  async (id) => {
+    const response = await removeCartByIdApi(id);
     return response.data;
   }
 )
