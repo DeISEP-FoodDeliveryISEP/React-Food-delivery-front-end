@@ -1,19 +1,44 @@
 import "../styles/checkout.css";
-import { Button, Card, CardBody, CardFooter, CardText, CardTitle, Col, Row } from "reactstrap";
+import { Badge, Button, Card, CardBody, CardFooter, CardText, CardTitle, Col, Row } from "reactstrap";
 import React from "react";
-import { addressListApi } from "../api/address";
+import { addressListApi, setDefaultAddressApi } from "../api/address";
+import { orderPagingApi } from "../api/order";
 
 const Personal = () => {
   const userId = localStorage.getItem("userId");
   const [addressBook, setAddressBook] = React.useState([]);
+  const [orders, setOrders] = React.useState([]);
   React.useEffect(() => {
+    getAddresses();
+    getOrders();
+  }, []);
+  const getAddresses = () => {
     addressListApi()
       .then((res) => {
         if (res.code === 1) {
           setAddressBook(res.data);
         }
       })
-  }, []);
+  }
+  const getOrders = () => {
+    orderPagingApi({ page: 1, pageSize: 100 })
+      .then((res) => {
+        if (res.code === 1) {
+          setOrders(res.data);
+          console.log("orders:", res.data);
+        }
+      })
+  }
+
+  const setAsDefault = (id) => {
+    setDefaultAddressApi({ id: id })
+      .then((res) => {
+        if (res.code === 1) {
+          console.log('set success');
+          getAddresses();
+        }
+      })
+  }
   return (
     <>
       <div className="checkoutMessage">
@@ -32,7 +57,7 @@ const Personal = () => {
                 <Card className="h-100">
                   <CardBody className="d-flex flex-column justify-content-between">
                     <CardTitle tag="h5">
-                      {addressItem.detail}
+                      {addressItem.detail} {addressItem.isDefault ? <Badge color="warning" pill>Default</Badge> : ""}
                     </CardTitle>
                     <div>
                       <div>Name: {addressItem.sex === "0" ? "Ms." : "Mr."} {addressItem.consignee}</div>
@@ -41,7 +66,7 @@ const Personal = () => {
                     </div>
                   </CardBody>
                   <CardFooter className="border-0 d-flex justify-content-end">
-                    <Button size="sm" className="me-2" color="light">Set as Default</Button>
+                    <Button size="sm" className="me-2" color="light" disabled={addressItem.isDefault} onClick={() => { setAsDefault(addressItem.id) }}>Set as Default</Button>
                     <Button size="sm" color="light">Edit</Button>
                   </CardFooter>
                 </Card>
