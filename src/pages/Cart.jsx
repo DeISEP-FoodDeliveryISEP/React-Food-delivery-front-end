@@ -6,20 +6,40 @@ import "../styles/cart-page.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Badge, Card, CardBody, CardTitle, CardFooter, Button } from "reactstrap";
 import { removeItemFromCart } from "../store/shopping-cart/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatImageLink, formatPrice } from "../common/utils";
 import { getDefaultAddressApi } from "../api/address";
+import { addOrderApi } from "../api/order";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const [addressData, setAddressData] = useState({});
+  const navigate = useNavigate();
 
   const getDefaultAddress = () => {
     getDefaultAddressApi()
       .then((res) => {
         if (res.code === 1) {
           setAddressData(res.data);
+        }
+      })
+  }
+
+  function goToPaySuccess() {
+    const params = {
+      remark: "",
+      payMethod: 1,
+      addressBookId: addressData.id
+    }
+    addOrderApi(params)
+      .then((res) => {
+        if (res.code === 1) {
+          console.log('success:', res);
+          navigate('/checkout');
+        }
+        else {
+          alert('place order failed.');
         }
       })
   }
@@ -76,8 +96,8 @@ const Cart = () => {
                   <button className="addTOCart__btn me-4">
                     <Link to="/pizzas">Continue Shopping</Link>
                   </button>
-                  <button className="addTOCart__btn">
-                    <Link to="/checkout">Proceed to checkout</Link>
+                  <button className="addTOCart__btn" onClick={() => { goToPaySuccess() }}>
+                    Proceed to checkout
                   </button>
                 </div>
               </div>
