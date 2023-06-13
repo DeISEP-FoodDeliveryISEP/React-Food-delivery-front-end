@@ -33,6 +33,7 @@ const ProductCard = (props) => {
         dishFlavor: JSON.stringify(selectedDishFlavor.map((flavor => (`${flavor.name}:${flavor.selectedDishFlavor}`))))
       })
     );
+    toggle();
   };
 
   return (
