@@ -1,14 +1,17 @@
 import "../styles/checkout.css";
-import { Badge, Button, Card, CardBody, CardFooter, CardText, CardTitle, Col, Row } from "reactstrap";
+import { Badge, Button, Card, CardBody, CardFooter, CardText, CardTitle, Col, Input, ModalBody, Row } from "reactstrap";
 import React from "react";
 import { addressListApi, setDefaultAddressApi } from "../api/address";
 import { orderPagingApi } from "../api/order";
 import { formatPrice } from "../common/utils";
+import { Modal } from "reactstrap";
 
 const Personal = () => {
   const userId = localStorage.getItem("userId");
   const [addressBook, setAddressBook] = React.useState([]);
   const [orders, setOrders] = React.useState([]);
+  const [modal, setModal] = React.useState(false);
+  const toggle = () => { setModal(!modal) };
   React.useEffect(() => {
     getAddresses();
     getOrders();
@@ -98,13 +101,20 @@ const Personal = () => {
                   </CardBody>
                   <CardFooter className="border-0 d-flex justify-content-end">
                     {/* <Button size="sm" className="me-2" color="light" disabled={addressItem.isDefault} onClick={() => { setAsDefault(addressItem.id) }}>Set as Default</Button> */}
-                    <Button size="sm" color="light">Rate</Button>
+                    <Button size="sm" color="light" onClick={() => { toggle(); }}>Rate</Button>
                   </CardFooter>
                 </Card>
               </Col>))}
           </Row>
         </div>
-      </div>
+        <Modal isOpen={modal} toggle={toggle} centered>
+          <ModalBody>
+            Rate: <Input></Input>
+            Comment: <Input></Input>
+            <Button className="mt-2">Submit</Button>
+          </ModalBody>
+        </Modal>
+      </div >
     </>
   );
 };
