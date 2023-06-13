@@ -27,6 +27,7 @@ const Login = () => {
       .then((res) => {
         if (res.code === 1) {
           sessionStorage.setItem("userPhone", phoneNumber);
+          localStorage.setItem("userId", res?.data?.id);
           navigate("/");
         }
       })
