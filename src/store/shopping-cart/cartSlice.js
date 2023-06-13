@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { cartListApi, addCartApi, clearCartApi, removeCartByIdApi } from "../../api/main";
+import { cartListApi, addCartApi, clearCartApi, removeCartByIdApi, subCartByIdApi } from "../../api/main";
 
 // const items =
 //   localStorage.getItem("cartItems") !== null
@@ -227,6 +227,32 @@ const cartSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
+      // subtract by id
+      .addCase(decItemFromCart.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(decItemFromCart.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        // Add any fetched posts to the array
+        const data = action.payload;
+        state.cartItems = data.map(item => ({
+          id: item.dishId,
+          name: item.name,
+          image: item.image,
+          price: item.amount * 100,
+          quantity: item.number,
+          dishFlavor: item.dishFlavor,
+          dishId: item.dishId,
+          setmealId: item.setMealId,
+          cartId: item.id,
+        }))
+        state.totalQuantity = state.cartItems.reduce((sum, item) => (sum += item.quantity), 0);
+        state.totalAmount = state.cartItems.reduce((sum, item) => (sum += item.price * item.quantity), 0);
+      })
+      .addCase(decItemFromCart.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
   },
 }); // end slice code
 
@@ -263,6 +289,14 @@ export const clearCart = createAsyncThunk(
   'cart/clearCart',
   async () => {
     const response = await clearCartApi();
+    return response.data;
+  }
+)
+
+export const decItemFromCart = createAsyncThunk(
+  'cart/decItemFromCart',
+  async (id) => {
+    const response = await subCartByIdApi(id);
     return response.data;
   }
 )

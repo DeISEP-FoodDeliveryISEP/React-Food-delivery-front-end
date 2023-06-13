@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../../../styles/cart-item.css";
 
 import { useDispatch } from "react-redux";
-import { cartActions, addToCart, removeItemFromCart } from "../../../store/shopping-cart/cartSlice";
+import { cartActions, addToCart, removeItemFromCart, decItemFromCart } from "../../../store/shopping-cart/cartSlice";
 
 import defaultItemImage from "../../../assets/images/defaultItemImage.png";
 import {
@@ -32,7 +32,7 @@ const CartItem = ({ item, onClose }) => {
   };
 
   const decreaseItem = (event) => {
-    dispatch(cartActions.removeItem(id));
+    dispatch(decItemFromCart(cartId));
     event.stopPropagation();
   };
 

@@ -54,6 +54,14 @@ export function updateCartApi(data) {
     })
 }
 
+export function subCartByIdApi(id) {
+    return $axios({
+        'url': '/shoppingCart/sub',
+        'method': 'delete',
+        params: new URLSearchParams({ id: id })
+    })
+}
+
 export function removeCartByIdApi(id) {
     return $axios({
         'url': '/shoppingCart/delete',
