@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 import { useDispatch, useSelector } from "react-redux";
 import { cartUiActions } from "../../../store/shopping-cart/cartUiSlice";
-import { fetchCart } from "../../../store/shopping-cart/cartSlice";
 import { formatPrice } from "../../../common/utils";
 import "../../../styles/shopping-cart.css";
+import { Button } from "reactstrap";
+import { clearCart } from "../../../store/shopping-cart/cartSlice";
 
 const Carts = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Carts = () => {
   return (
     <div className="cart__container" onClick={toggleCart}>
       <ListGroup onClick={(event) => event.stopPropagation()} className="cart">
+        <div className="d-flex justify-content-end my-1 me-1"><Button size="sm" className="rounded outline" onClick={() => { dispatch(clearCart()) }}>Clear</Button></div>
         <div className="cart__closeButton">
           <span onClick={toggleCart}>
             <i className="ri-close-fill"></i>

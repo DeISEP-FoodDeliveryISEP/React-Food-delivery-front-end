@@ -71,13 +71,13 @@ const Tr = (props) => {
       </td>
       <td className="text-center">{name}</td>
       <td className="text-center">{formatPrice(price)}</td>
-      <td className="text-center">{Array.from(dishFlavor).map(value => {
+      {dishFlavor !== undefined ? <td className="text-center">{JSON.parse(dishFlavor).map(value => {
         return (
           <Badge key={value} pill color="light" className="text-dark">
             {value}
           </Badge>
         )
-      })}</td>
+      })}</td> : <></>}
       <td className="text-center">{quantity}px</td>
       <td className="text-center cart__item-del">
         <i className="ri-delete-bin-line" onClick={deleteItem}></i>
