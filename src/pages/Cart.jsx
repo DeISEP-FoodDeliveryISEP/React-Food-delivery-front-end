@@ -22,16 +22,20 @@ const Cart = () => {
       .then((res) => {
         if (res.code === 1) {
           setAddressData(res.data);
+          console.log(res.data);
         }
       })
   }
 
   function goToPaySuccess() {
+    console.log(addressData);
     const params = {
-      remark: "",
+      remark: "...",
       payMethod: 1,
-      addressBookId: addressData.id
+      addressBookId: addressData.id,
+      star: 3
     }
+    console.log('the params are:', params);
     addOrderApi(params)
       .then((res) => {
         if (res.code === 1) {
@@ -39,6 +43,7 @@ const Cart = () => {
           navigate('/checkout');
         }
         else {
+          console.log('failed:', res);
           alert('place order failed.');
         }
       })

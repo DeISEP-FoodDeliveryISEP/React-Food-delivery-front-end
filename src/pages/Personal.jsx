@@ -3,6 +3,7 @@ import { Badge, Button, Card, CardBody, CardFooter, CardText, CardTitle, Col, Ro
 import React from "react";
 import { addressListApi, setDefaultAddressApi } from "../api/address";
 import { orderPagingApi } from "../api/order";
+import { formatPrice } from "../common/utils";
 
 const Personal = () => {
   const userId = localStorage.getItem("userId");
@@ -24,8 +25,8 @@ const Personal = () => {
     orderPagingApi({ page: 1, pageSize: 100 })
       .then((res) => {
         if (res.code === 1) {
-          setOrders(res.data);
-          console.log("orders:", res.data);
+          setOrders(res.data.records);
+          console.log("orders:", res.data.records);
         }
       })
   }
@@ -75,6 +76,33 @@ const Personal = () => {
         </div>
         <div className="mt-3">
           <h3>Past Orders</h3>
+          <Row>
+            {orders.map((orderItem) => (
+              <Col xs="12" sm="6" key={orderItem.id}>
+                <Card className="h-100">
+                  <CardBody className="d-flex flex-column justify-content-between">
+                    <CardTitle tag="h5">
+                      Order Number: {orderItem.number}
+                    </CardTitle>
+                    <div>
+                      <div>Name: {orderItem.consignee}</div>
+                      <div>Time: {orderItem.orderTime}</div>
+                      <div>Order Details: </div>
+                      {orderItem.orderDetail.map((dishes) => {
+                        return (<div>{dishes.name} <Badge color="warning">{JSON.parse(dishes.dishFlavor).join(',')}</Badge></div>)
+                      })}
+                      <div>Total Price: {formatPrice(orderItem.amount * 100)}</div>
+                      {/* <div>Phone Number: {addressItem.phone}</div> */}
+                      {/* {addressItem.label !== null ? `Label: ${addressItem.label === '公司' ? 'office' : 'home'}` : ""} */}
+                    </div>
+                  </CardBody>
+                  <CardFooter className="border-0 d-flex justify-content-end">
+                    {/* <Button size="sm" className="me-2" color="light" disabled={addressItem.isDefault} onClick={() => { setAsDefault(addressItem.id) }}>Set as Default</Button> */}
+                    <Button size="sm" color="light">Rate</Button>
+                  </CardFooter>
+                </Card>
+              </Col>))}
+          </Row>
         </div>
       </div>
     </>
